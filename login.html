@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Smart Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-glass py-3">
+    <div class="container">
+      <a class="navbar-brand brand-logo" href="index.html"><i class="bi bi-bag-check-fill me-1"></i>Smart Store</a>
+      <div class="theme-toggle" onclick="toggleTheme()"><div class="knob"><i class="bi bi-sun-fill" style="font-size:0.65rem"></i></div></div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="auth-card card-surface p-4 p-md-5 animate-in">
+      <div class="text-center mb-4">
+        <i class="bi bi-bag-check-fill text-brand" style="font-size:2.5rem"></i>
+        <h3 class="mt-2 mb-1">Welcome back</h3>
+        <p class="text-muted">Login to continue shopping</p>
+      </div>
+      <form onsubmit="handleLogin(event)">
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Email address</label>
+          <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Password</label>
+          <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-brand w-100 py-2 mt-2">Login</button>
+      </form>
+      <p class="text-center text-muted small mt-4 mb-0">
+        Don't have an account? <a href="signup.html" class="text-brand fw-semibold">Sign up</a>
+      </p>
+      <div class="text-center mt-3 pt-3 border-top border-theme">
+        <p class="text-muted small mb-1">Demo credentials</p>
+        <p class="small mb-0"><code>admin@smartstore.com / admin123</code> (Admin)</p>
+        <p class="small mb-0"><code>demo@smartstore.com / demo1234</code> (Customer)</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>redirectIfLoggedIn();</script>
+</body>
+</html>

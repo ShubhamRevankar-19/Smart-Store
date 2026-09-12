@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — Smart Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-glass py-3">
+    <div class="container">
+      <a class="navbar-brand brand-logo" href="index.html"><i class="bi bi-bag-check-fill me-1"></i>Smart Store</a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"><i class="bi bi-list fs-2"></i></button>
+      <div class="collapse navbar-collapse" id="navMain">
+        <div class="search-wrap mx-lg-4 my-3 my-lg-0 flex-grow-1" style="max-width:520px">
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-end-0" style="border-radius:12px 0 0 12px;border-color:var(--border);background:var(--surface) !important"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" id="searchInput" class="form-control border-start-0" style="border-radius:0 12px 12px 0" placeholder="Search products...">
+          </div>
+          <div class="search-suggestions" id="searchSuggestions"></div>
+        </div>
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><div class="theme-toggle" onclick="toggleTheme()"><div class="knob"><i class="bi bi-sun-fill" style="font-size:0.65rem"></i></div></div></li>
+          <li class="nav-item"><a href="profile.html#notifications" class="nav-icon-btn"><i class="bi bi-bell"></i><span class="badge-dot" id="notifBadge" style="display:none">0</span></a></li>
+          <li class="nav-item"><a href="wishlist.html" class="nav-icon-btn"><i class="bi bi-heart"></i></a></li>
+          <li class="nav-item"><a href="cart.html" class="nav-icon-btn"><i class="bi bi-cart3"></i><span class="badge-dot" id="cartBadge" style="display:none">0</span></a></li>
+          <li class="nav-item ms-lg-2" id="authArea"></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-4">
+    <h2 class="mb-4">Hi, <span id="welcomeName" class="text-brand">there</span> 👋</h2>
+
+    <ul class="nav nav-pills mb-4 gap-2" id="profileTabs">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pane-account">Account</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#pane-orders" id="orders">Orders</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#pane-addresses">Addresses</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#pane-notifications" id="notifications">Notifications</button></li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- Account -->
+      <div class="tab-pane fade show active" id="pane-account">
+        <div class="row g-4">
+          <div class="col-md-4 text-center">
+            <img id="profileAvatar" class="rounded-circle mb-3" style="width:120px;height:120px;object-fit:cover" src="" alt="Avatar">
+          </div>
+          <div class="col-md-8">
+            <div class="card-surface p-4">
+              <h5 class="mb-3">Account Details</h5>
+              <form onsubmit="updateProfileForm(event)">
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Full Name</label>
+                  <input type="text" id="profileName" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Email</label>
+                  <input type="email" id="profileEmail" class="form-control" disabled>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">New Password (optional)</label>
+                  <input type="password" id="profilePassword" class="form-control" placeholder="Leave blank to keep current password">
+                </div>
+                <button type="submit" class="btn btn-brand">Save Changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders -->
+      <div class="tab-pane fade" id="pane-orders">
+        <div id="ordersList"><div class="spinner-wrap"><div class="brand-spinner"></div></div></div>
+      </div>
+
+      <!-- Addresses -->
+      <div class="tab-pane fade" id="pane-addresses">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Saved Addresses</h5>
+          <button class="btn btn-brand btn-sm" data-bs-toggle="modal" data-bs-target="#addAddressModal"><i class="bi bi-plus-lg me-1"></i>Add Address</button>
+        </div>
+        <div id="addressList"></div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="tab-pane fade" id="pane-notifications">
+        <h5 class="mb-3">Notifications</h5>
+        <div id="notificationsList"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Address Modal -->
+  <div class="modal fade" id="addAddressModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background:var(--surface);color:var(--text);border-radius:16px">
+        <form onsubmit="addAddressForm(event)">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">Add New Address</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2">
+              <div class="col-6"><input class="form-control" name="label" placeholder="Label (Home/Work)"></div>
+              <div class="col-6"><input class="form-control" name="phone" placeholder="Phone" required></div>
+              <div class="col-12"><input class="form-control" name="fullName" placeholder="Full Name" required></div>
+              <div class="col-12"><input class="form-control" name="line1" placeholder="Address Line 1" required></div>
+              <div class="col-12"><input class="form-control" name="line2" placeholder="Address Line 2 (optional)"></div>
+              <div class="col-6"><input class="form-control" name="city" placeholder="City" required></div>
+              <div class="col-6"><input class="form-control" name="state" placeholder="State" required></div>
+              <div class="col-6"><input class="form-control" name="postalCode" placeholder="Postal Code" required></div>
+              <div class="col-6"><input class="form-control" name="country" placeholder="Country" value="India"></div>
+              <div class="col-12 form-check mt-2">
+                <input class="form-check-input" type="checkbox" name="isDefault" id="isDefaultCheck">
+                <label class="form-check-label small" for="isDefaultCheck">Set as default address</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="submit" class="btn btn-brand w-100">Save Address</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-surface mt-5 pt-5 pb-4">
+    <div class="container text-center text-muted small">© 2026 Smart Store.</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/order-success.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>
